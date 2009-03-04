@@ -1,9 +1,13 @@
-from portal.wms.models import Provider, Project, ItemType, Item, Import, Export
+from portal.wms.models import Provider, Manufacturer, Project, ItemType, Item, Import, Export
 
 from django.contrib import admin
 from django import forms
 
 class ProviderAdmin(admin.ModelAdmin):
+	list_display = ('name', 'desc','contact', 'tel1', 'tel2','mail')
+	search_fields = ('name', 'desc')
+
+class ManufacturerAdmin(admin.ModelAdmin):
 	list_display = ('name', 'desc')
 	search_fields = ('name', 'desc')
 
@@ -15,8 +19,9 @@ class ItemTypeAdmin(admin.ModelAdmin):
 	list_display = ('name','desc')
 
 class ItemAdmin(admin.ModelAdmin):
-	list_display = ('pn', 'opn', 'type', 'package', 'desc', 'num')
-	search_fields = ('pn', 'opn', 'type', 'desc')
+	list_display = ('pn', 'opn', 'type', 'manufacturer', 'value', 'package', 'desc', 'num')
+	list_filter = ('type','manufacturer','package','value',)
+	search_fields = ('pn', 'opn', 'type__name','manufacturer__name','value', 'desc')
 
 class ImportAdmin(admin.ModelAdmin):
 	list_display = ('item','provider','project','num', 'price', 'sum', 'ver','cycle','min_num', 'min_price','pay_date', 'arrive_date', 'arrived_date', 'enter_date')
@@ -45,6 +50,7 @@ class ExportAdmin(admin.ModelAdmin):
 	search_fields = ('item__pn', 'project__name')
 
 admin.site.register(Provider, ProviderAdmin)
+admin.site.register(Manufacturer, ManufacturerAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(ItemType, ItemTypeAdmin)
 admin.site.register(Item, ItemAdmin)

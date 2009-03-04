@@ -3,14 +3,25 @@
 from django.db import models
 
 class Provider(models.Model):
-	name = models.CharField("供应商名",max_length=128)
+	name = models.CharField("供应商名",max_length=128, unique=True)
 	desc = models.TextField("供应商描述", blank=True)
+	contact = models.CharField("联系人", max_length=32, blank=True)
+	tel1 = models.CharField("联系电话1", max_length=32, blank=True)
+	tel2 = models.CharField("联系电话2", max_length=32, blank=True)
+	mail = models.EmailField("电子邮件", blank=True)
+
+	def __unicode__(self):
+		return self.name
+
+class Manufacturer(models.Model):
+	name = models.CharField("制造商名",max_length=128, unique=True)
+	desc = models.TextField("制造商描述", blank=True)
 
 	def __unicode__(self):
 		return self.name
 
 class Project(models.Model):
-	name = models.CharField("项目名",max_length=128)
+	name = models.CharField("项目名",max_length=128, unique=True)
 	desc = models.TextField("项目描述")
 	ower = models.CharField("项目负责人",max_length=128)
 	customer = models.CharField("项目客户",max_length=128)
@@ -19,17 +30,19 @@ class Project(models.Model):
 		return self.name
 
 class ItemType(models.Model):
-	name = models.CharField("物料类型名",max_length=128)
+	name = models.CharField("物料类型名",max_length=128, unique=True)
 	desc = models.TextField("类型描述", blank=True)
 
 	def __unicode__(self):
 		return self.name
 
 class Item(models.Model):
-	pn = models.CharField("物料编号", max_length=128)
+	pn = models.CharField("物料编号", max_length=128, unique=True)
 	opn = models.CharField("物料原厂编号", max_length=128)
+	manufacturer = models.ForeignKey(Manufacturer, verbose_name="制造商")
 	type = models.ForeignKey(ItemType, verbose_name="物料类型")
-	package = models.CharField("封装", max_length=64, blank=True)
+	value = models.CharField("型号/值", max_length=128)
+	package = models.CharField("封装", max_length=64)
 	desc = models.TextField("物料描述")
 	num = models.IntegerField("库存数量", editable=False, default=0)
 
