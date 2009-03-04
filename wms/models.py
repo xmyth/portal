@@ -20,11 +20,80 @@ class Manufacturer(models.Model):
 	def __unicode__(self):
 		return self.name
 
+class Customer(models.Model):
+	name = models.CharField("客户名", max_length=128, unique=True)
+	desc = models.TextField("客户描述", blank=True)
+
+	def __unicode__(self):
+		return self.name
+
+class Employee(models.Model):
+	name = models.CharField("员工名",max_length=128, unique=True)
+	desc = models.TextField("描述")
+
+	def __unicode__(self):
+		return self.name
+
+class Contract(models.Model):
+	CONTRACT_STATUS = (
+		('A','未签订'),
+		('B','已签订'),
+		('C','进行中'),
+		('D','已完成'),
+		('E','已开票'),
+		('F','已收款'),
+		('G','已结束'),
+		('H','已取消'),
+	)
+	sn = models.CharField("合同编号", max_length=128, unique=True)
+	name = models.CharField("合同名", max_length=128)
+	customer = models.ForeignKey(Customer, verbose_name = "客户")
+	owner = models.ForeignKey(Employee, verbose_name = "签订人")
+	price = models.FloatField("合同金额");
+	status = models.CharField("状态", max_length=1, choices=CONTRACT_STATUS, default='B')
+	assigned_date = models.DateField("签订日期")
+	finished_date = models.DateField("完成日期")
+	receipt_date = models.DateField("开票日期")
+	receive_date = models.DateField("收款日期")
+
+	def __unicode__(self):
+		return self.sn
+
+TASK_STATUS = (
+	('A', '未计划'),
+	('B', '已计划'),
+	('C', '进行中'),
+	('D', '已完成'),
+	('E', '已取消'),
+	('F', '已推迟'),
+)
+
 class Project(models.Model):
 	name = models.CharField("项目名",max_length=128, unique=True)
 	desc = models.TextField("项目描述")
-	ower = models.CharField("项目负责人",max_length=128)
-	customer = models.CharField("项目客户",max_length=128)
+	owner = models.ForeignKey(Employee, verbose_name="负责人")
+	status = models.CharField("状态",max_length=1, choices=TASK_STATUS)
+	contract = models.ForeignKey(Contract, verbose_name = "项目合同")
+	customer = models.ForeignKey(Customer, verbose_name = "客户")
+	scheduled_start_date = models.DateField("计划开始日期")
+	scheduled_finish_date = models.DateField("计划完成日期")
+	started_date = models.DateField("开始日期")
+	finished_date = models.DateField("完成日期")
+
+	def __unicode__(self):
+		return self.name
+
+
+class Task(models.Model):
+	name = models.CharField("任务名", max_length=128)
+	desc = models.TextField("任务描述")
+	owner = models.ForeignKey(Employee, verbose_name="负责人")
+	project = models.ForeignKey(Project, verbose_name="所属项目")
+	status = models.CharField("状态", max_length=1, choices=TASK_STATUS)
+	scheduled_start_date = models.DateField("计划开始日期")
+	scheduled_finish_date = models.DateField("计划完成日期")
+	started_date = models.DateField("开始日期")
+	finished_date = models.DateField("完成日期")
 
 	def __unicode__(self):
 		return self.name

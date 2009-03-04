@@ -1,4 +1,4 @@
-from portal.wms.models import Provider, Manufacturer, Project, ItemType, Item, Import, Export
+from portal.wms.models import Provider, Manufacturer, Customer, Employee, Contract, Project, Task, ItemType, Item, Import, Export
 
 from django.contrib import admin
 from django import forms
@@ -11,9 +11,25 @@ class ManufacturerAdmin(admin.ModelAdmin):
 	list_display = ('name', 'desc')
 	search_fields = ('name', 'desc')
 
+class CustomerAdmin(admin.ModelAdmin):
+	list_display = ('name','desc')
+	search_fields = ('name','desc')
+
+class EmployeeAdmin(admin.ModelAdmin):
+	list_display = ('name','desc')
+	search_fields = ('name','desc')
+	
+class ContractAdmin(admin.ModelAdmin):
+	list_display = ('sn','name','customer','price','status','assigned_date','finished_date','receipt_date','receive_date')
+	search_fields = ('sn','name')
+
 class ProjectAdmin(admin.ModelAdmin):
-	list_display = ('name', 'desc', 'ower', 'customer')
-	search_fields = ('name', 'desc', 'ower', 'customer')
+	list_display = ('name', 'desc', 'owner', 'customer')
+	search_fields = ('name', 'desc', 'owner', 'customer')
+
+class TaskAdmin(admin.ModelAdmin):
+	list_display = ('name','desc','owner','project','status','scheduled_start_date','scheduled_finish_date','started_date','finished_date')
+	search_fields = ('name','desc')
 
 class ItemTypeAdmin(admin.ModelAdmin):
 	list_display = ('name','desc')
@@ -51,7 +67,11 @@ class ExportAdmin(admin.ModelAdmin):
 
 admin.site.register(Provider, ProviderAdmin)
 admin.site.register(Manufacturer, ManufacturerAdmin)
+admin.site.register(Customer, CustomerAdmin)
+admin.site.register(Employee, EmployeeAdmin)
+admin.site.register(Contract, ContractAdmin)
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(Task, TaskAdmin)
 admin.site.register(ItemType, ItemTypeAdmin)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Import, ImportAdmin)
