@@ -12,8 +12,8 @@ class ManufacturerAdmin(admin.ModelAdmin):
 	search_fields = ('name', 'desc')
 
 class ProjectAdmin(admin.ModelAdmin):
-	list_display = ('name', 'desc', 'ower', 'customer')
-	search_fields = ('name', 'desc', 'ower', 'customer')
+	list_display = ('name', 'desc', 'owner', 'customer')
+	search_fields = ('name', 'desc', 'owner', 'customer')
 
 class ItemTypeAdmin(admin.ModelAdmin):
 	list_display = ('name','desc')

@@ -23,7 +23,7 @@ class Manufacturer(models.Model):
 class Project(models.Model):
 	name = models.CharField("项目名",max_length=128, unique=True)
 	desc = models.TextField("项目描述")
-	ower = models.CharField("项目负责人",max_length=128)
+	owner = models.CharField("项目负责人",max_length=128)
 	customer = models.CharField("项目客户",max_length=128)
 
 	def __unicode__(self):
