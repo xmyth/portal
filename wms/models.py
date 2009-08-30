@@ -122,5 +122,54 @@ class Export(models.Model):
 			selected_item.num += delta
 			selected_item.save()
 
+class LibraryType(models.Model):
+	name = models.CharField("PCB库归类名",max_length=128, unique=True)
+	desc = models.TextField("描述", blank=True)
+
+	def __unicode__(self):
+		return self.name
+
+class User(models.Model):
+	name = models.CharField("用户名", max_length=128, unique=True)
+	desc = models.TextField("用户描述", blank=True)
+
+	def __unicode__(self):
+		return self.name
+
+class Qaer(models.Model):
+	name = models.CharField("用户名", max_length=128, unique=True)
+	desc = models.TextField("用户描述", blank=True)
+
+	def __unicode__(self):
+		return self.name
 
 
+class Library(models.Model):
+	name = models.CharField("封装名", max_length=128, unique=True);
+	pad     = models.CharField("焊盘信息", max_length=128);
+
+	PACKAGE_SOURCE_CHOICES = (
+			('N', '新库'),
+			('O', '其他板导出'),
+	)
+	source  = models.CharField("来源", max_length=1, choices=PACKAGE_SOURCE_CHOICES)
+	project = models.ForeignKey(Project, verbose_name="应用项目")
+	type    = models.ForeignKey(LibraryType, verbose_name="归类")
+	board   = models.CharField("来源板名", max_length=128);
+	board_uri = models.CharField("来源板存放地址", max_length=256)
+	ds_uri    = models.CharField("器件数据手册存放地址", max_length=256)
+	ver     = models.CharField("版本号", max_length=128)
+	qa      = models.ForeignKey(Qaer, verbose_name="QA人员")
+	creator = models.ForeignKey(User, verbose_name="入库人员")
+	date    = models.DateField("建库/修改时间")
+	desc    = models.TextField("关键参数描述")
+	up_desc = models.TextField("版本更新说明", blank=True)
+
+	def __unicode__(self):
+		return self.name
+
+
+	
+
+
+	

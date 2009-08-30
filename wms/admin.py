@@ -1,4 +1,4 @@
-from portal.wms.models import Provider, Manufacturer, Project, ItemType, Item, Import, Export
+from portal.wms.models import Provider, Manufacturer, Project, ItemType, Item, Import, Export, LibraryType, User, Qaer, Library
 
 from django.contrib import admin
 from django import forms
@@ -49,6 +49,22 @@ class ExportAdmin(admin.ModelAdmin):
 	ordering = ('-issue_date',)
 	search_fields = ('item__pn', 'project__name')
 
+class LibraryTypeAdmin(admin.ModelAdmin):
+	list_display = ('name', 'desc')
+	search_fields = ('name', 'desc')
+
+class UserAdmin(admin.ModelAdmin):
+	list_display = ('name', 'desc')
+	search_fields = ('name', 'desc')
+
+class QaerAdmin(admin.ModelAdmin):
+	list_display = ('name', 'desc')
+	search_fields = ('name', 'desc')
+
+class LibraryAdmin(admin.ModelAdmin):
+	list_display = ('name', 'pad', 'type', 'project', 'desc', 'qa', 'creator')
+	search_fields = ('name', 'pad', 'project__name', 'type__name', 'desc', 'up_desc')
+
 admin.site.register(Provider, ProviderAdmin)
 admin.site.register(Manufacturer, ManufacturerAdmin)
 admin.site.register(Project, ProjectAdmin)
@@ -56,4 +72,8 @@ admin.site.register(ItemType, ItemTypeAdmin)
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Import, ImportAdmin)
 admin.site.register(Export, ExportAdmin)
+admin.site.register(LibraryType, LibraryTypeAdmin)
+admin.site.register(User, UserAdmin)
+admin.site.register(Qaer, QaerAdmin)
+admin.site.register(Library, LibraryAdmin)
 
